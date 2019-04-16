@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="d3.min.js"></script>
+    <style>
+    .wrap {
+    positon: relative;
+    overflow: hidden;
+    margin-bottom: 1em;
+    }
+    .bar {
+    background-color: navy;
+    width: 2em;
+    height: auto;
+    margin-right: 5px;
+    float: left;
+    position: relative;
+    color: #fff;
+    text-align: center;
+    padding-top: 5px;
+    }
+    button {
+        font-size: 1.5em;
+        float: left;
+        margin-right:10px;
+    }
+    </style>
+    
+    <title>Document</title>
+</head>
+<body>
+    <script>
+   
+    var data = [1,2,3,4,5];
+    var height = 250, width = 300;
+    // body
+
+    var body = d3.select('body');
+    var wrap = body.append('div')
+                .attr('class','wrap')
+                .style('height', height + 'px');
+               
+                
+    
+
+    // render
+
+    var render = function() {
+        wrap.selectAll('.bar')
+            .data(data)
+            .enter()
+            .append('div')
+            .attr('class','bar')
+            .style('height',function(d){return 25 * d + 'px';})
+            .style('top', function(d){return (height - 25 * d) + 'px';})
+            .text(function(d){return d;});
+    };
+
+
+    var remove = function() {
+        wrap.selectAll('.bar')
+            .data(data)
+            .attr('class','bar')
+            .style('height',function(d){return 25 * d + 'px';})
+            .style('top', function(d){return (height - 25 * d) + 'px';})
+            .text(function(d){return d;})
+            .exit()
+            .remove();
+    };
+    
+    render();
+
+    // body.append('button')
+    //     .classed('remove', true)
+    //     .text('remove');
+    body.append('button')
+        .classed('add',true)
+        .text('add');
+    body.append('button')
+        .classed('remove', true)
+        .text('remove');
+    
+    
+    d3.select('.add').on('click',function(){data.push(Math.floor(Math.random()*10 + 1)); render();});
+    
+
+    d3.select('.remove').on('click',function(){data.pop(); remove();});
+
+
+    </script>
+    </body>
+</html>
